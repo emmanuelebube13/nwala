@@ -111,12 +111,14 @@ export const projects: Project[] = [
     },
   },
   {
-    // TODO: the Figma frame says "[TMU mapping project name]" — replace with the real project name
-    title: 'Mapping research with TMU',
-    tag: 'Mapping',
-    description: 'Mapping and spatial analysis with the Together Design Lab at Toronto Metropolitan University.',
-    type: 'Mapping · Research',
-    credit: 'Emmanuel (data analyst)',
+    title: 'Nova Scotia Student Homelessness Survey Analytics',
+    tag: 'NDA',
+    tagStyle: 'nda',
+    description:
+      'Survey analytics on student homelessness in Nova Scotia, carried out with Toronto Metropolitan University (TMU).',
+    type: 'Data · Research',
+    credit: 'Emmanuel (data analyst), with TMU',
+    note: 'Under NDA. Walkthrough available on request.',
   },
   {
     title: 'Housing research: NewRoots',
