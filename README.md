@@ -1,34 +1,59 @@
 # Nwala
 
-The starting point for the Nwala project: a React and TypeScript dashboard that makes the larger idea visible while it is being built.
+Portfolio site for Nwala, a two-person design and data studio in Halifax, Nova Scotia. It includes a working
+concept of a "digital front desk" website for the Ndi Igbo Cultural Association of Nova Scotia (NICANS).
+
+Built with Vite, React 19 and TypeScript. Plain CSS with design tokens taken from the Figma file. Deployed on Vercel.
 
 ## Run locally
 
-Install dependencies, then start the development server:
-
 ```bash
 npm install
-npm run dev
+npm run dev      # http://localhost:5173
+npm run build    # type-check and production build into dist/
 ```
 
-Open the local URL printed by Vite. The page supports hot module replacement, and the production build can be generated with:
+## Pages
 
-```bash
-npm run build
-```
+| Route | What it is |
+| --- | --- |
+| `/` | Studio home: intro, featured concept, founders, how we work, contact |
+| `/work` | Project list with working filters |
+| `/work/nicans` | NICANS case study (password protected) |
+| `/concept/nicans` | NICANS concept: home page |
+| `/concept/nicans/newcomers` | Newcomer guide with checklists saved on the device |
+| `/concept/nicans/register` | Multi-step registration (`?program=children-engaged`, `iri-ji`, `afamefuna-2`, `amara`, or `?type=volunteer`, `member`, `partner`, `newcomer`) |
+| `/concept/nicans/dashboard` | Volunteer management hub: search, filters, status changes, CSV export |
+
+Registrations submitted in the demo are stored in the browser and appear in the dashboard.
+
+## Password
+
+The case study and concept pages ask for a password. It is set in `src/lib/unlock.ts` (currently `njiko`).
+A link with `?key=njiko` (for example `/work/nicans?key=njiko`) opens it directly, which is handy for the proposal email.
+
+## Editing content
+
+- Studio name, email, founders' bios and the project list: `src/data/studio.ts`
+- NICANS programs, events and sample registrations: `src/data/nicans.ts`
+- Colours, fonts and spacing: `src/styles/tokens.css`
+- Images: `public/assets/`
 
 ## Project structure
 
-The source is organized by responsibility:
-
 ```text
 src/
-├── app/       # Application shell and page composition
-├── components/ # Reusable UI components as the project grows
-├── data/      # Project content and configuration
-├── types/     # Shared TypeScript types
-├── assets/    # Images and other imported assets
-└── styles/    # Global styles and design tokens
+├── app/App.tsx              # routes
+├── components/
+│   ├── ConceptGate.tsx      # password page
+│   ├── studio/              # studio shell, nav, footer, emblem, styles
+│   └── nicans/              # NICANS layout (demo bar, header, footer) and shared styles
+├── pages/
+│   ├── studio/              # Home, Work, CaseStudy, NotFound
+│   └── nicans/              # Landing, NewcomerGuide, Register, Dashboard (+ their CSS)
+├── data/                    # content
+├── lib/                     # unlock + scroll-reveal helpers
+└── styles/tokens.css        # design tokens
 ```
 
-The current dashboard lives in `src/app/App.tsx`. Workstream content is separated into `src/data/workstreams.ts`, so adding or editing project areas does not require digging through page markup.
+`vercel.json` rewrites every path to `index.html` so deep links work on Vercel.
