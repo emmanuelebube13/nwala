@@ -9,6 +9,10 @@ export interface Founder {
   short: string
   role: string
   initials: string
+  /** One or two lines shown beside the portrait */
+  summary: string
+  /** Headshot in public/assets/studio/, e.g. '/assets/studio/ifechukwu.jpg'. Initials show until one is added. */
+  photo?: string
   bio: string[]
   skills: string[]
   highlights: string[]
@@ -20,6 +24,7 @@ export const founders: Founder[] = [
     short: 'Ifechukwu',
     role: 'Product designer',
     initials: 'IA',
+    summary: 'Product designer. Founding designer at Dora; brand and web design for BAPOM Hospital.',
     bio: [
       'Ifechukwu designs websites and products that people can use the first time they open them. He has been the founding designer on a business voice-calling platform, redesigned the brand and website of a charity-funded hospital, and designed responsive interfaces for one of Nigeria’s largest mobile networks.',
       'He leads research, information architecture and visual design at Nwala, and makes sure every screen meets accessibility standards before it ships.',
@@ -32,6 +37,7 @@ export const founders: Founder[] = [
     short: 'Emmanuel',
     role: 'Data analyst',
     initials: 'EM',
+    summary: 'Data analyst. Power BI reporting, mapping and housing research across Nova Scotia.',
     bio: [
       'Emmanuel turns messy records into reports that boards and funders can act on. He built a Power BI reporting suite on more than 355,000 Nova Scotia property sales, worked on mapping with Saint Mary’s University, and ran mixed-methods housing research for planning stakeholders.',
       'At Nwala he builds the sites and the measurement behind them: forms that feed clean data, dashboards for volunteers and simple impact reports.',

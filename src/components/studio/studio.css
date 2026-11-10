@@ -1390,3 +1390,161 @@
 .frame--phone .frame__viewport img {
   aspect-ratio: 390 / 800;
 }
+
+/* ---------- Founders band (final Figma frame) ---------- */
+.st-band {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 545px) minmax(0, 1fr);
+  gap: 8px;
+  align-items: start;
+  padding: 26px 0;
+  background: var(--gray-4);
+  margin-bottom: 32px;
+}
+
+.st-band__note {
+  max-width: 223px;
+  font-size: 13px;
+  line-height: 1.6;
+  letter-spacing: -0.004em;
+  color: var(--gray-8);
+}
+
+.st-band__note--left {
+  justify-self: end;
+  text-align: right;
+  margin-top: 28px;
+}
+
+.st-band__note--right {
+  justify-self: start;
+  margin-top: 106px;
+}
+
+.st-band__portraits {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.st-portrait {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 12px;
+  background: none;
+  overflow: hidden;
+  text-align: left;
+}
+
+.st-portrait img,
+.st-photo-placeholder {
+  display: block;
+  width: 100%;
+  height: 263px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+/* Image placeholder: matches the grey #d9d9d9 tiles in the Figma frame */
+.st-photo-placeholder {
+  background: #d9d9d9;
+}
+
+.st-portrait__label {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  display: grid;
+  gap: 2px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  font-size: 12px;
+  color: var(--gray-8);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.st-portrait__label strong {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gray-10);
+}
+
+.st-portrait:hover .st-portrait__label,
+.st-portrait:focus-visible .st-portrait__label,
+.st-portrait.is-active .st-portrait__label {
+  opacity: 1;
+  transform: none;
+}
+
+.st-portrait.is-active {
+  box-shadow: 0 0 0 2px var(--studio-accent);
+}
+
+.st-bios {
+  display: grid;
+  gap: 32px;
+}
+
+.st-bio {
+  display: grid;
+  gap: 12px;
+  transition: opacity 0.25s ease;
+}
+
+.st-bio p {
+  font-size: 16px;
+  line-height: 1.6;
+  letter-spacing: -0.004em;
+  color: var(--gray-8);
+}
+
+.st-bio strong {
+  font-weight: 600;
+  color: var(--gray-10);
+}
+
+.st-bio.is-dim {
+  opacity: 0.45;
+}
+
+.st-steps {
+  gap: 8px;
+}
+
+.st-folder__front {
+  background: var(--gray-5);
+}
+
+@media (max-width: 900px) {
+  .st-band {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 16px;
+    border-radius: 12px;
+  }
+  .st-band__portraits {
+    grid-column: 1 / -1;
+    order: -1;
+  }
+  .st-band__note,
+  .st-band__note--left,
+  .st-band__note--right {
+    justify-self: start;
+    text-align: left;
+    margin-top: 0;
+    max-width: none;
+  }
+  .st-portrait img,
+  .st-photo-placeholder {
+    height: auto;
+    aspect-ratio: 4 / 5;
+  }
+}

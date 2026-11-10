@@ -1,83 +1,84 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
-  ArrowRight,
+  BezierCurve,
   ChartLineUp,
   ChatsCircle,
-  CheckCircle,
-  Code,
   Copy,
-  Ear,
+  Desktop,
   EnvelopeSimple,
   LockSimple,
-  PenNib,
+  Path,
+  Target,
   UsersThree,
-  Wrench,
 } from '@phosphor-icons/react'
 import StudioShell, { Emblem } from '../../components/studio/StudioShell.tsx'
 import { founders, STUDIO_EMAIL, STUDIO_LOCATION, STUDIO_NAME, type Founder } from '../../data/studio.ts'
 
 const steps = [
-  { icon: Ear, title: 'We Listen', text: 'We meet the people who’ll use it, in person when we can, before we design anything.' },
-  { icon: PenNib, title: 'We Design', text: 'Sketches, then real screens. You see progress every week and shape it as we go.' },
-  { icon: Code, title: 'We Build', text: 'Fast, accessible sites your team can update without calling us.' },
+  { icon: Target, title: 'We Listen', text: 'We meet the people who’ll use it, in person when we can, before we design anything.' },
+  { icon: BezierCurve, title: 'We Design', text: 'Sketches, then real screens. You see progress every week and shape it as we go.' },
+  { icon: Desktop, title: 'We Build', text: 'Fast, accessible sites your team can update without calling us.' },
   { icon: ChartLineUp, title: 'Then Measure', text: 'We track what’s working and turn it into reports your board can use.' },
 ]
 
-const words = ['digital experiences', 'community websites', 'front desks online']
-
-function RotatingWord() {
-  const [i, setI] = useState(0)
-  useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const t = window.setInterval(() => setI((n) => (n + 1) % words.length), 2600)
-    return () => window.clearInterval(t)
-  }, [])
+function Portrait({ f, active, onSelect }: { f: Founder; active: boolean; onSelect: () => void }) {
   return (
-    <span className="st-swap" aria-live="off" key={i} style={{ animation: 'st-in 0.5s ease both' }}>
-      {words[i]}
-    </span>
+    <button
+      type="button"
+      className={`st-portrait${active ? ' is-active' : ''}`}
+      aria-pressed={active}
+      aria-controls={`bio-${f.initials}`}
+      onClick={onSelect}
+    >
+      {f.photo ? (
+        <img src={f.photo} alt={`Portrait of ${f.name}`} loading="lazy" />
+      ) : (
+        /* Image placeholder: replace by setting `photo` for this founder in src/data/studio.ts */
+        <div className="st-photo-placeholder" role="img" aria-label={`Portrait of ${f.name} (photo coming soon)`} />
+      )}
+      <span className="st-portrait__label">
+        <strong>{f.name}</strong>
+        <span>{f.role}</span>
+      </span>
+    </button>
   )
 }
 
-function FounderCard({ f }: { f: Founder }) {
-  const [open, setOpen] = useState(false)
-  const id = `bio-${f.initials}`
+/** Founders band from the final Figma frame: two portraits with short bios either side, full bios below. */
+function Founders() {
+  const [active, setActive] = useState<number | null>(null)
+  const [a, b] = founders
   return (
-    <article className="st-founder reveal">
-      <div className="st-founder__top">
-        <div className="st-avatar" aria-hidden="true">
-          <span>{f.initials}</span>
+    <>
+      <div className="st-band reveal">
+        <p className="st-band__note st-band__note--left">{a.summary}</p>
+        <div className="st-band__portraits">
+          <Portrait f={a} active={active === 0} onSelect={() => setActive(active === 0 ? null : 0)} />
+          <Portrait f={b} active={active === 1} onSelect={() => setActive(active === 1 ? null : 1)} />
         </div>
-        <div>
-          <h3 className="st-founder__name">{f.name}</h3>
-          <p className="st-founder__role">{f.role}</p>
-        </div>
+        <p className="st-band__note st-band__note--right">{b.summary}</p>
       </div>
-      <div className="st-founder__bio">
-        <p>{f.bio[0]}</p>
-        <div className={`st-collapse${open ? ' is-open' : ''}`} id={id}>
-          <div>
-            <p style={{ marginBottom: 16 }}>{f.bio[1]}</p>
-            <ul className="st-founder__highlights">
-              {f.highlights.map((h) => (
-                <li key={h}>
-                  <CheckCircle size={16} weight="fill" aria-hidden="true" /> {h}
-                </li>
+      <div className="st-col st-bios">
+        {founders.map((f, i) => (
+          <div
+            key={f.name}
+            id={`bio-${f.initials}`}
+            className={`st-bio reveal${active !== null && active !== i ? ' is-dim' : ''}`}
+          >
+            <p>
+              <strong>{f.name}</strong>, {f.role.toLowerCase()}. {f.bio[0]}
+            </p>
+            <p>{f.bio[1]}</p>
+            <ul className="st-tags" aria-label={`${f.short}’s skills`}>
+              {f.skills.map((s) => (
+                <li key={s}>{s}</li>
               ))}
             </ul>
           </div>
-        </div>
-      </div>
-      <button type="button" className="st-founder__more" aria-expanded={open} aria-controls={id} onClick={() => setOpen((o) => !o)}>
-        {open ? 'Show less' : `More about ${f.short}`}
-      </button>
-      <ul className="st-tags" aria-label={`${f.short}’s skills`}>
-        {f.skills.map((s) => (
-          <li key={s}>{s}</li>
         ))}
-      </ul>
-    </article>
+      </div>
+    </>
   )
 }
 
@@ -99,8 +100,9 @@ export default function Home() {
       <section className="st-hero">
         <div className="st-col">
           <h1 className="reveal">
-            We design clear <RotatingWord />
-            <br /> and back them with data.
+            We design clear
+            <br /> digital experiences and
+            <br /> back them with data.
           </h1>
           <p className="st-lead reveal">
             {STUDIO_NAME} is a two-person studio: a product designer and a data analyst. We help organizations build
@@ -109,9 +111,6 @@ export default function Home() {
           <div className="st-hero__actions reveal">
             <Link to="#contact" className="pill pill--dark">
               Contact us
-            </Link>
-            <Link to="/work" className="pill">
-              See our work <ArrowRight size={14} aria-hidden="true" />
             </Link>
           </div>
         </div>
@@ -126,10 +125,10 @@ export default function Home() {
             </span>
             <div className="st-folder__front">
               <span className="st-folder__tab">Featured concept</span>
-              <h2 id="featured-title">NICANS: a digital front desk</h2>
+              <h2 id="featured-title">NICANS: A digital front desk</h2>
               <p>
                 A website concept for a Nova Scotia community association, with a newcomer guide, program registration
-                and a volunteer dashboard. Designed, then built as a working prototype. Shared privately with permission.
+                and a volunteer dashboard. Shared privately with permission.
               </p>
               <span className="pill">
                 <LockSimple size={16} aria-hidden="true" /> View the concept
@@ -148,18 +147,10 @@ export default function Home() {
             <h2 id="founders-title" className="st-h2">
               Meet the founders
             </h2>
-            <p className="st-body">
-              Two people, one team from start to finish. The person who designs your site helps build it, and the
-              person who builds it measures whether it works.
-            </p>
           </div>
         </div>
-        <div className="st-wide" style={{ maxWidth: 'calc(880px + 2 * var(--gutter))' }}>
-          <div className="st-founders">
-            {founders.map((f) => (
-              <FounderCard key={f.name} f={f} />
-            ))}
-          </div>
+        <div className="st-wide">
+          <Founders />
         </div>
       </section>
 
@@ -167,7 +158,7 @@ export default function Home() {
         <div className="st-col">
           <div className="st-section__head reveal">
             <Emblem>
-              <Wrench size={32} weight="fill" />
+              <Path size={32} weight="bold" />
             </Emblem>
             <h2 id="how-title" className="st-h2">
               How we work
