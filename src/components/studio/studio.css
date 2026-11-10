@@ -1333,7 +1333,10 @@
     grid-template-columns: minmax(0, 1fr);
   }
   .st-section {
-    padding: 64px 0;
+    padding: 56px 0;
+  }
+  .st-folder-wrap {
+    padding: 24px 0 40px;
   }
   .st-folder__front {
     padding: 48px 20px 28px;

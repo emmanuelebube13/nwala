@@ -202,8 +202,36 @@
 }
 
 @media (max-width: 720px) {
+  .nc-demobar__inner {
+    flex-wrap: nowrap;
+    gap: 8px;
+    padding-right: 0;
+  }
+  .nc-demobar__text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+  .nc-demobar nav {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    min-width: 0;
+    flex: 1;
+  }
+  .nc-demobar nav::-webkit-scrollbar {
+    display: none;
+  }
+  .nc-demobar a {
+    white-space: nowrap;
+  }
   .nc-demobar__back {
     margin-left: 0;
+    flex: none;
+    padding-right: var(--gutter) !important;
   }
 }
 

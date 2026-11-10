@@ -608,11 +608,11 @@
   gap: 16px;
 }
 
-.rg-next {
+.rg-continue {
   min-width: 156px;
 }
 
-.rg-next.is-loading {
+.rg-continue.is-loading {
   cursor: progress;
   opacity: 0.85;
 }

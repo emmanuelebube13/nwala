@@ -9,7 +9,7 @@ const demoLinks = [
   { to: NC, label: 'Home', end: true },
   { to: `${NC}/newcomers`, label: 'Newcomer guide' },
   { to: `${NC}/register`, label: 'Registration' },
-  { to: `${NC}/dashboard`, label: 'Volunteer dashboard' },
+  { to: `${NC}/dashboard`, label: 'Management hub' },
 ]
 
 function DemoBar() {
@@ -18,7 +18,7 @@ function DemoBar() {
       <div className="nc-container nc-demobar__inner">
         <span className="nc-demobar__label">
           <span className="nc-demobar__dot" aria-hidden="true" />
-          Live concept by Nwala
+          <span className="nc-demobar__text">Live concept by Nwala</span>
         </span>
         <nav aria-label="Demo screens">
           {demoLinks.map((l) => (
@@ -28,7 +28,7 @@ function DemoBar() {
           ))}
         </nav>
         <Link to="/work/nicans" className="nc-demobar__back">
-          ← Back to case study
+          ← <span className="nc-demobar__text">Back to </span>case study
         </Link>
       </div>
     </div>

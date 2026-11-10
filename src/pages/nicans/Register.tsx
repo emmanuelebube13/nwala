@@ -154,7 +154,7 @@ function StepFooter({ step, onBack, submitting, submitLabel }: { step: Step; onB
         ) : (
           <span />
         )}
-        <button type="submit" className={`nc-btn nc-btn--primary rg-next${submitting ? ' is-loading' : ''}`} aria-disabled={submitting || undefined}>
+        <button type="submit" className={`nc-btn nc-btn--primary rg-continue${submitting ? ' is-loading' : ''}`} aria-disabled={submitting || undefined}>
           {submitting ? (
             <>
               <SpinnerGap size={18} className="rg-spin" aria-hidden="true" />
@@ -241,17 +241,30 @@ function RegistrationFlow({ flow }: { flow: Flow }) {
     })
   }
 
-  /** Re-check one field on blur, once it has a value or the step was already attempted. */
+  /** On blur: flag a field that has a value (or was already attempted) and is invalid. */
   const revalidate = (key: string, hasValue: boolean) => {
-    if (!hasValue && !attempted && !errors[key]) return
+    if (!hasValue && !attempted) return
     const all = validateStep(step, flow.kind, data)
-    setErrors((prev) => {
-      const next = { ...prev }
-      if (all[key]) next[key] = all[key]
-      else delete next[key]
-      return next
-    })
+    if (all[key]) setErrors((prev) => (prev[key] === all[key] ? prev : { ...prev, [key]: all[key] }))
   }
+
+  // While typing: clear errors as soon as they are fixed (never add new ones, so layout stays put before a click).
+  useEffect(() => {
+    setErrors((prev) => {
+      const keys = Object.keys(prev)
+      if (!keys.length) return prev
+      const all = { ...validateStep(step, flow.kind, data), ...(step === 2 && flow.kind === 'children' ? validateChild(data.draft) : {}) }
+      let changed = false
+      const next: Errors = {}
+      for (const k of keys) {
+        if (all[k]) {
+          next[k] = all[k]
+          if (all[k] !== prev[k]) changed = true
+        } else changed = true
+      }
+      return changed ? next : prev
+    })
+  }, [data, step, flow.kind])
 
   const goTo = (s: Step) => {
     setErrors({})
