@@ -73,6 +73,16 @@ export default function NewcomerGuide() {
     }
   }, [progress])
 
+  // Keep the selected tab visible when the tab row scrolls horizontally (mobile).
+  useEffect(() => {
+    const idx = stages.findIndex((s) => s.id === active)
+    const el = tabRefs.current[idx]
+    const row = el?.parentElement
+    if (!el || !row || row.scrollWidth <= row.clientWidth) return
+    const left = el.offsetLeft - row.offsetLeft - 16
+    row.scrollTo({ left: Math.max(0, left), behavior: 'smooth' })
+  }, [active])
+
   const stage = stages.find((s) => s.id === active) ?? stages[1]
   const countFor = (sid: string) => {
     const s = stages.find((x) => x.id === sid)!
@@ -215,7 +225,7 @@ export default function NewcomerGuide() {
 
             <aside className="ng-side" aria-label="Progress and support">
               <div className="ng-progress-desktop">{progressCard}</div>
-              <section className="ng-card ng-dark reveal" aria-labelledby="ng-alone">
+              <section className="ng-card ng-dark" aria-labelledby="ng-alone">
                 <h2 id="ng-alone">You don’t have to do it alone.</h2>
                 <p className="ng-dark__sub">Talk to a NICANS volunteer</p>
                 <p>A friendly connection as you find your feet in Nova Scotia.</p>
@@ -224,7 +234,7 @@ export default function NewcomerGuide() {
                   <ArrowRight size={18} weight="bold" aria-hidden="true" />
                 </Link>
               </section>
-              <section className="ng-card ng-help reveal" aria-labelledby="ng-help-title">
+              <section className="ng-card ng-help" aria-labelledby="ng-help-title">
                 <h2 id="ng-help-title">
                   <Phone size={22} aria-hidden="true" />
                   Need help now?

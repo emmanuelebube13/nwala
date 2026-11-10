@@ -55,7 +55,7 @@ export const programs: Program[] = [
   {
     slug: 'children-engaged',
     name: 'Children Engaged',
-    date: 'Saturdays from Sept 12, 2027',
+    date: 'Saturdays from Sept 11, 2027',
     time: '10:00am',
     place: 'Halifax Central Library',
     audience: 'Children 5–12',

@@ -2,7 +2,7 @@
 
 const MONTHS = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december']
 
-/** Parses "August 15, 2027" or "Saturdays from Sept 12, 2027" into [y, m, d]. */
+/** Parses "August 15, 2027" or "Saturdays from Sept 11, 2027" into [y, m, d]. */
 export function parseDisplayDate(s: string): [number, number, number] | null {
   const m = s.toLowerCase().match(/([a-z]+)\.?\s+(\d{1,2}),\s*(\d{4})/)
   if (!m) return null

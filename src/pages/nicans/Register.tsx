@@ -889,7 +889,7 @@ function Confirmation({ flow, data, headingRef }: { flow: Flow; data: FormData; 
     </>,
   ]
   if (kind === 'children') {
-    next.push(<>We’ll send a reminder 2 days before the first session on Sept 12, 2027.</>)
+    next.push(<>We’ll send a reminder 2 days before the first session on Saturday, Sept 11, 2027.</>)
     next.push(<>Bring a water bottle and a snack. Sessions run 10:00am to 12:00pm at {p?.place}.</>)
   } else if (kind === 'event') {
     next.push(<>We’ll send a reminder 2 days before {p?.date}.</>)
@@ -953,23 +953,6 @@ function Confirmation({ flow, data, headingRef }: { flow: Flow; data: FormData; 
         {flow.confirmTitle}
       </h2>
       <p className="rg-confirm__lead">{title}</p>
-
-      {p && (
-        <ul className="rg-meta rg-meta--card">
-          <li>
-            <CalendarBlank size={18} aria-hidden="true" />
-            {kind === 'children' ? 'Saturdays from Sept 12, 2027' : p.date}
-          </li>
-          <li>
-            <Clock size={18} aria-hidden="true" />
-            {kind === 'children' ? '10:00am – 12:00pm' : p.time}
-          </li>
-          <li>
-            <MapPin size={18} aria-hidden="true" />
-            {p.place}
-          </li>
-        </ul>
-      )}
 
       <div className="rg-card rg-next">
         <h3>What happens next</h3>
