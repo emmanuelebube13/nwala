@@ -1548,3 +1548,351 @@
     aspect-ratio: 4 / 5;
   }
 }
+
+/* ---------- Final nav pill: Studio / Work, aligned to the content column ---------- */
+.st-nav {
+  justify-content: center;
+}
+
+.st-nav__pill {
+  width: auto;
+  padding: 2px;
+  border: 0;
+  margin-right: min(384px, calc(100% - 164px));
+  background: linear-gradient(180deg, rgba(250, 250, 250, 0.9), rgba(240, 240, 240, 0.9));
+}
+
+.st-nav__links {
+  gap: 12px;
+  padding: 5px 8px;
+  border: 1px solid rgba(217, 217, 217, 0.95);
+  border-radius: 50px;
+}
+
+.st-nav__link {
+  min-height: 26px;
+  padding: 0 12px;
+}
+
+@media (max-width: 760px) {
+  .st-nav__pill {
+    margin-right: 0;
+  }
+}
+
+/* ---------- Selected Work (final Figma frame) ---------- */
+.sw {
+  padding: 132px 0 24px;
+}
+
+.sw-head {
+  display: grid;
+  grid-template-columns: 288px minmax(0, 1fr);
+  align-items: baseline;
+  padding-bottom: 24px;
+}
+
+.sw-head__years {
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: -0.025em;
+}
+
+.sw-head h1 {
+  font-weight: 600;
+  font-size: clamp(32px, 5vw, 40px);
+  line-height: 1.22;
+  letter-spacing: -0.06em;
+}
+
+.sw-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sw-row {
+  border-top: 1px solid var(--gray-5);
+}
+
+.sw-row__head {
+  display: grid;
+  grid-template-columns: 288px minmax(0, 1fr) 40px;
+  align-items: center;
+  width: 100%;
+  padding: 24px 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  color: inherit;
+}
+
+.sw-row__num {
+  font-weight: 500;
+  font-size: 50px;
+  line-height: 1.25;
+  letter-spacing: -0.088em;
+  font-variant-numeric: lining-nums proportional-nums;
+  transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.sw-row__main {
+  display: grid;
+  gap: 6px;
+  justify-items: start;
+  padding-right: 16px;
+}
+
+.sw-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+  border-radius: 4px 4px 0 0;
+  background: var(--gray-4);
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.sw-tag--private {
+  background: var(--volcano-5);
+}
+
+.sw-tag--nda {
+  background: var(--gray-10);
+  color: #fff;
+}
+
+.sw-row__title {
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 1.25;
+  letter-spacing: -0.036em;
+}
+
+.sw-row__plus {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  background: var(--gray-4);
+  color: var(--gray-8);
+  transition: transform 0.3s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.sw-row__head:hover .sw-row__num {
+  transform: translateX(8px);
+}
+
+.sw-row__head:hover .sw-row__plus {
+  background: var(--gray-5);
+  color: var(--gray-10);
+}
+
+.sw-row.is-open .sw-row__plus {
+  transform: rotate(45deg);
+  background: var(--gray-10);
+  color: #fff;
+}
+
+.sw-row__detail {
+  display: grid;
+  gap: 16px;
+  justify-items: start;
+  margin-left: 288px;
+  padding: 0 56px 32px 0;
+}
+
+.sw-row__desc {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--gray-8);
+  max-width: 640px;
+}
+
+.sw-row__detail .st-meta {
+  width: 100%;
+  max-width: 640px;
+}
+
+.sw-contact {
+  padding-top: 72px;
+}
+
+@media (max-width: 900px) {
+  .sw-head,
+  .sw-row__head {
+    grid-template-columns: 72px minmax(0, 1fr) 40px;
+  }
+  .sw-head {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
+  .sw-row__num {
+    font-size: 32px;
+  }
+  .sw-row__detail {
+    margin-left: 72px;
+    padding-right: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .sw {
+    padding-top: 104px;
+  }
+  .sw-row__head {
+    grid-template-columns: 48px minmax(0, 1fr) 40px;
+    padding: 20px 0;
+  }
+  .sw-row__num {
+    font-size: 26px;
+  }
+  .sw-row__title {
+    font-size: 19px;
+  }
+  .sw-row__detail {
+    margin-left: 0;
+  }
+}
+
+/* ---------- Password pop-up (final Figma frame) ---------- */
+.pw-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: var(--gutter);
+  background: rgba(250, 250, 250, 0.6);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: pw-fade 0.2s ease both;
+}
+
+.pw {
+  position: relative;
+  width: min(400px, 100%);
+  padding: 28px 20px 20px;
+  border-radius: 12px;
+  background: var(--gray-2);
+  box-shadow: 0 8px 8px -4px rgba(0, 0, 0, 0.1), 0 16px 16px -8px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.1),
+    inset 0 0 4px rgba(255, 255, 255, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  animation: pw-pop 0.25s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@keyframes pw-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes pw-pop {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+}
+
+.pw__close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--gray-8);
+}
+
+.pw__close:hover {
+  background: var(--gray-4);
+  color: var(--gray-10);
+}
+
+.pw__title {
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 1.25;
+  letter-spacing: -0.036em;
+  margin-bottom: 32px;
+  padding-right: 24px;
+}
+
+.pw__form {
+  display: grid;
+  gap: 24px;
+  justify-items: start;
+}
+
+.pw__field {
+  display: grid;
+  gap: 8px;
+  width: 100%;
+}
+
+.pw__field label {
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.pw__field input {
+  width: 100%;
+  height: 40px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 6px;
+  background: #fff;
+  font-size: 16px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1), 0 3px 3px -1.5px rgba(0, 0, 0, 0.1), 0 0 0 0.5px rgba(0, 0, 0, 0.1);
+}
+
+.pw__field input::placeholder {
+  color: var(--gray-7);
+}
+
+.pw__field input:focus {
+  outline: none;
+  box-shadow: 0 0 0 1px var(--gray-10), 0 0 0 4px rgba(129, 11, 176, 0.18);
+}
+
+.pw__field input[aria-invalid='true'] {
+  box-shadow: 0 0 0 1px #cf1322;
+  animation: gate-shake 0.35s ease;
+}
+
+.pw__help {
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--gray-8);
+}
+
+.pw__help--error {
+  color: #a8071a;
+}
+
+.pw__help svg {
+  flex: none;
+  margin-top: 2px;
+}
+
+/* Rows animate in with CSS so state-driven class changes never hide them. */
+.sw-row {
+  animation: st-in 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sw-row {
+    animation: none;
+  }
+}

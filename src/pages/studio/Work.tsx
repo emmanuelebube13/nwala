@@ -1,106 +1,148 @@
-import { useMemo, useState } from 'react'
+import { useState, type MouseEvent } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowUpRight, ChatsCircle, LockSimple } from '@phosphor-icons/react'
+import { ArrowUpRight, ChatsCircle, Copy, LockSimple, Plus } from '@phosphor-icons/react'
 import StudioShell, { Emblem } from '../../components/studio/StudioShell.tsx'
-import { projects, STUDIO_EMAIL, STUDIO_LOCATION, type Project, type ProjectCategory } from '../../data/studio.ts'
+import { useConceptDialog } from '../../components/studio/useConceptDialog.tsx'
+import { projects, STUDIO_EMAIL, STUDIO_LOCATION, type Project } from '../../data/studio.ts'
 
-const filters: Array<'All' | ProjectCategory> = ['All', 'Design', 'Development', 'Data & mapping']
-
-function ProjectRow({ p }: { p: Project }) {
+function Tag({ p }: { p: Project }) {
   return (
-    <article className={`st-project${p.featured ? ' st-project--featured' : ''}`}>
-      {p.featured && (
-        <span className="st-project__tab">
-          <LockSimple size={12} weight="bold" aria-hidden="true" /> Private concept
+    <span className={`sw-tag${p.tagStyle ? ` sw-tag--${p.tagStyle}` : ''}`}>
+      {p.tagStyle && <LockSimple size={16} aria-hidden="true" />}
+      {p.tag}
+    </span>
+  )
+}
+
+function Row({
+  p,
+  n,
+  open,
+  onToggle,
+  onConcept,
+}: {
+  p: Project
+  n: number
+  open: boolean
+  onToggle: () => void
+  onConcept: (e: MouseEvent) => void
+}) {
+  const id = `sw-detail-${n}`
+  return (
+    <li className={`sw-row${open ? ' is-open' : ''}`} style={{ animationDelay: `${n * 50}ms` }}>
+      <button type="button" className="sw-row__head" aria-expanded={open} aria-controls={id} onClick={onToggle}>
+        <span className="sw-row__num" aria-hidden="true">
+          {String(n + 1).padStart(2, '0')}
         </span>
-      )}
-      <div className="st-project__main">
-        <h2>{p.title}</h2>
-        <p>{p.description}</p>
-        {p.link &&
-          (p.link.internal ? (
-            <Link to={p.link.href} className="pill">
-              <LockSimple size={16} aria-hidden="true" /> {p.link.label} →
-            </Link>
-          ) : (
-            <a className="st-project__link" href={p.link.href} target="_blank" rel="noopener noreferrer">
-              {p.link.label} <ArrowUpRight size={12} style={{ display: 'inline' }} aria-hidden="true" />
-              <span className="sr-only"> (opens in a new tab)</span>
-            </a>
-          ))}
-        {p.note && <p className="st-project__note">{p.note}</p>}
-      </div>
-      <dl className="st-meta">
+        <span className="sw-row__main">
+          <Tag p={p} />
+          <span className="sw-row__title">{p.title}</span>
+        </span>
+        <span className="sw-row__plus" aria-hidden="true">
+          <Plus size={24} />
+        </span>
+        <span className="sr-only">{open ? ', hide details' : ', show details'}</span>
+      </button>
+      <div className={`st-collapse${open ? ' is-open' : ''}`} id={id}>
         <div>
-          <dt>Type</dt>
-          <dd>{p.type}</dd>
-        </div>
-        <div>
-          <dt>Credit</dt>
-          <dd>{p.credit}</dd>
-        </div>
-        {p.year && (
-          <div>
-            <dt>Year</dt>
-            <dd>{p.year}</dd>
+          <div className="sw-row__detail">
+            <p className="sw-row__desc">{p.description}</p>
+            <dl className="st-meta">
+              <div>
+                <dt>Type</dt>
+                <dd>{p.type}</dd>
+              </div>
+              <div>
+                <dt>Credit</dt>
+                <dd>{p.credit}</dd>
+              </div>
+              {p.year && (
+                <div>
+                  <dt>Year</dt>
+                  <dd>{p.year}</dd>
+                </div>
+              )}
+            </dl>
+            {p.link &&
+              (p.link.internal ? (
+                <Link to={p.link.href} className="pill" onClick={onConcept} tabIndex={open ? 0 : -1}>
+                  <LockSimple size={16} aria-hidden="true" /> {p.link.label}
+                </Link>
+              ) : (
+                <a className="pill" href={p.link.href} target="_blank" rel="noopener noreferrer" tabIndex={open ? 0 : -1}>
+                  {p.link.label} <ArrowUpRight size={14} aria-hidden="true" />
+                  <span className="sr-only"> (opens in a new tab)</span>
+                </a>
+              ))}
+            {p.note && <p className="st-project__note">{p.note}</p>}
           </div>
-        )}
-      </dl>
-    </article>
+        </div>
+      </div>
+    </li>
   )
 }
 
 export default function Work() {
-  const [filter, setFilter] = useState<(typeof filters)[number]>('All')
-  const visible = useMemo(
-    () => (filter === 'All' ? projects : projects.filter((p) => p.categories.includes(filter))),
-    [filter],
-  )
+  const [openRow, setOpenRow] = useState<number | null>(null)
+  const [copied, setCopied] = useState(false)
+  const { onOpen, dialog } = useConceptDialog()
+
+  async function copyEmail() {
+    try {
+      await navigator.clipboard.writeText(STUDIO_EMAIL)
+    } catch {
+      /* clipboard blocked */
+    }
+    setCopied(true)
+    window.setTimeout(() => setCopied(false), 2200)
+  }
 
   return (
     <StudioShell active="work">
-      <section className="st-work-head">
+      <section className="sw" aria-labelledby="sw-title">
+        <div className="st-wide">
+          <div className="sw-head reveal">
+            <p className="sw-head__years">2023–2026</p>
+            <h1 id="sw-title">Selected Work</h1>
+          </div>
+          <ol className="sw-list">
+            {projects.map((p, i) => (
+              <Row
+                key={p.title}
+                p={p}
+                n={i}
+                open={openRow === i}
+                onToggle={() => setOpenRow(openRow === i ? null : i)}
+                onConcept={onOpen}
+              />
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section className="st-section sw-contact" aria-labelledby="work-contact" id="contact">
         <div className="st-col">
-          <h1 className="reveal">Work</h1>
-          <p className="st-lead reveal">Projects we’ve worked on, together and individually. Each one shows who did what.</p>
-        </div>
-        <div className="st-filters reveal" role="group" aria-label="Filter projects">
-          {filters.map((f) => {
-            const count = f === 'All' ? projects.length : projects.filter((p) => p.categories.includes(f)).length
-            return (
-              <button key={f} type="button" className="pill" aria-pressed={filter === f} onClick={() => setFilter(f)}>
-                {f} <small>{count}</small>
-              </button>
-            )
-          })}
-        </div>
-      </section>
-
-      <section className="st-work-list" aria-label="Projects">
-        <div className="st-wide" aria-live="polite">
-          {visible.length ? (
-            visible.map((p) => <ProjectRow key={`${filter}-${p.title}`} p={p} />)
-          ) : (
-            <p className="st-empty">No projects in this category yet.</p>
-          )}
+          <div className="st-section__head reveal" style={{ marginBottom: 24 }}>
+            <Emblem>
+              <ChatsCircle size={32} weight="fill" />
+            </Emblem>
+            <h2 id="work-contact" className="st-h2">
+              Let’s build your ideas together.
+            </h2>
+          </div>
+          <div className="st-contact__lines reveal">
+            <strong>Tell us about your project. We reply within 2 working days.</strong>
+            <span>We are based in {STUDIO_LOCATION} and happy to meet in person.</span>
+          </div>
+          <button type="button" className="pill" onClick={copyEmail} aria-label={`Copy email address ${STUDIO_EMAIL}`}>
+            <Copy size={18} aria-hidden="true" /> {STUDIO_EMAIL}
+          </button>
         </div>
       </section>
-
-      <section className="st-cta" aria-labelledby="work-contact">
-        <Emblem>
-          <ChatsCircle size={32} weight="fill" />
-        </Emblem>
-        <div className="st-col" style={{ display: 'grid', gap: 16, textAlign: 'center' }}>
-          <h2 id="work-contact" className="st-h2">
-            Let’s build something useful
-          </h2>
-          <p className="st-body">Tell us about your project. We reply within 2 working days.</p>
-          <p className="st-body">Based in {STUDIO_LOCATION}. Happy to meet in person.</p>
-        </div>
-        <a className="pill" href={`mailto:${STUDIO_EMAIL}`}>
-          {STUDIO_EMAIL}
-        </a>
-      </section>
+      <div className={`st-toast${copied ? ' is-shown' : ''}`} role="status" aria-live="polite">
+        {copied ? 'Email address copied' : ''}
+      </div>
+      {dialog}
     </StudioShell>
   )
 }

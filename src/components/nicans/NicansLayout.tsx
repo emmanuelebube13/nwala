@@ -18,7 +18,7 @@ function DemoBar() {
       <div className="nc-container nc-demobar__inner">
         <span className="nc-demobar__label">
           <span className="nc-demobar__dot" aria-hidden="true" />
-          <span className="nc-demobar__text">Live concept by Nwala</span>
+          <span className="nc-demobar__text">Live concept by Nwaala</span>
         </span>
         <nav aria-label="Demo screens">
           {demoLinks.map((l) => (
@@ -134,7 +134,7 @@ function Footer() {
           </div>
         </div>
         <div className="nc-footer__legal">
-          <p>© 2027 NICANS · Concept design by Nwala</p>
+          <p>© 2027 NICANS · Concept design by Nwaala</p>
           <p>
             <Link to={NC}>Privacy policy</Link> · <Link to={NC}>Accessibility</Link>
           </p>

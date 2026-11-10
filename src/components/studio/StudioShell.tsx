@@ -17,18 +17,12 @@ function StudioNav({ active }: { active: 'studio' | 'work' }) {
   return (
     <header className={`st-nav${scrolled ? ' is-scrolled' : ''}`}>
       <nav className="st-nav__pill" aria-label="Main">
-        <Link to="/" className="st-nav__logo" aria-label={`${STUDIO_NAME}, home`}>
-          {STUDIO_NAME}
-        </Link>
         <div className="st-nav__links">
           <Link to="/" className="st-nav__link" aria-current={active === 'studio' ? 'page' : undefined}>
             Studio
           </Link>
           <Link to="/work" className="st-nav__link" aria-current={active === 'work' ? 'page' : undefined}>
             Work
-          </Link>
-          <Link to="/#contact" className="st-nav__link st-nav__link--contact">
-            Contact
           </Link>
         </div>
       </nav>

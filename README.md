@@ -1,6 +1,6 @@
-# Nwala
+# Nwaala
 
-Portfolio site for Nwala, a two-person design and data studio in Halifax, Nova Scotia. It includes a working
+Portfolio site for Nwaala, a two-person design and data studio in Halifax, Nova Scotia. It includes a working
 concept of a "digital front desk" website for the Ndi Igbo Cultural Association of Nova Scotia (NICANS).
 
 Built with Vite, React 19 and TypeScript. Plain CSS with design tokens taken from the Figma file. Deployed on Vercel.

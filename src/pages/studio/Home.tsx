@@ -13,6 +13,7 @@ import {
   UsersThree,
 } from '@phosphor-icons/react'
 import StudioShell, { Emblem } from '../../components/studio/StudioShell.tsx'
+import { useConceptDialog } from '../../components/studio/useConceptDialog.tsx'
 import { founders, STUDIO_EMAIL, STUDIO_LOCATION, STUDIO_NAME, type Founder } from '../../data/studio.ts'
 
 const steps = [
@@ -64,7 +65,7 @@ function Founders() {
           <div
             key={f.name}
             id={`bio-${f.initials}`}
-            className={`st-bio reveal${active !== null && active !== i ? ' is-dim' : ''}`}
+            className={`st-bio${active !== null && active !== i ? ' is-dim' : ''}`}
           >
             <p>
               <strong>{f.name}</strong>, {f.role.toLowerCase()}. {f.bio[0]}
@@ -84,6 +85,7 @@ function Founders() {
 
 export default function Home() {
   const [copied, setCopied] = useState(false)
+  const { onOpen, dialog } = useConceptDialog()
 
   async function copyEmail() {
     try {
@@ -118,7 +120,7 @@ export default function Home() {
 
       <section className="st-folder-wrap" aria-labelledby="featured-title">
         <div className="st-col">
-          <Link to="/work/nicans" className="st-folder reveal">
+          <Link to="/work/nicans" className="st-folder reveal" onClick={onOpen}>
             <span className="st-folder__back" aria-hidden="true" />
             <span className="st-folder__paper" aria-hidden="true">
               <img src="/assets/studio/concept-peek.jpg" alt="" width={720} height={550} loading="lazy" />
@@ -209,6 +211,7 @@ export default function Home() {
       <div className={`st-toast${copied ? ' is-shown' : ''}`} role="status" aria-live="polite">
         {copied ? 'Email address copied' : ''}
       </div>
+      {dialog}
     </StudioShell>
   )
 }
