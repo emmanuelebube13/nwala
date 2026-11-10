@@ -105,6 +105,10 @@ export const projects: Project[] = [
       'Power BI reporting suite built on 355,000+ Nova Scotia property sales records (2018–2026), with map links.',
     type: 'Data · Mapping',
     credit: 'Emmanuel',
+    link: {
+      label: 'Open the live report',
+      href: 'https://app.powerbi.com/view?r=eyJrIjoiY2FhZjcyYjMtYjQ0NS00MzQyLTg4YmMtZWM5OWUwYzUxN2I0IiwidCI6ImU3ZTc2NmE4LTY3NDEtNDdhNy1iNDEwLWUwZDJiNzMxYzMyYSJ9',
+    },
   },
   {
     // TODO: the Figma frame says "[TMU mapping project name]" — replace with the real project name
