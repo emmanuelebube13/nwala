@@ -23,22 +23,33 @@ const steps = [
   { icon: ChartLineUp, title: 'Then Measure', text: 'We track what’s working and turn it into reports your board can use.' },
 ]
 
-function Portrait({ f, active, onSelect }: { f: Founder; active: boolean; onSelect: () => void }) {
+function Portrait({
+  f,
+  active,
+  shown,
+  onSelect,
+}: {
+  f: Founder
+  active: boolean
+  shown: boolean
+  onSelect: () => void
+}) {
   return (
     <button
       type="button"
-      className={`st-portrait${active ? ' is-active' : ''}`}
+      className={`st-portrait${active ? ' is-active' : ''}${shown ? ' is-shown' : ''}`}
       aria-pressed={active}
       aria-controls={`bio-${f.initials}`}
+      aria-label={`${f.name}, ${f.role}. Show bio`}
       onClick={onSelect}
     >
       {f.photo ? (
-        <img src={f.photo} alt={`Portrait of ${f.name}`} loading="lazy" />
+        <img src={f.photo} alt="" loading="lazy" />
       ) : (
         /* Image placeholder: replace by setting `photo` for this founder in src/data/studio.ts */
         <div className="st-photo-placeholder" role="img" aria-label={`Portrait of ${f.name} (photo coming soon)`} />
       )}
-      <span className="st-portrait__label">
+      <span className="st-portrait__label" aria-hidden="true">
         <strong>{f.name}</strong>
         <span>{f.role}</span>
       </span>
@@ -46,37 +57,50 @@ function Portrait({ f, active, onSelect }: { f: Founder; active: boolean; onSele
   )
 }
 
-/** Founders band from the final Figma frame: two portraits with short bios either side, full bios below. */
+/**
+ * Founders band from the final Figma frame.
+ * Desktop: both full bios sit side by side under the portraits (left person left, right person right);
+ * clicking a portrait marks that person's bio.
+ * Mobile: the portraits switch which bio is shown, one at a time.
+ */
 function Founders() {
   const [active, setActive] = useState<number | null>(null)
+  const shown = active ?? 0
   const [a, b] = founders
+  const select = (i: number) => setActive(active === i ? null : i)
   return (
     <>
       <div className="st-band reveal">
         <p className="st-band__note st-band__note--left">{a.summary}</p>
         <div className="st-band__portraits">
-          <Portrait f={a} active={active === 0} onSelect={() => setActive(active === 0 ? null : 0)} />
-          <Portrait f={b} active={active === 1} onSelect={() => setActive(active === 1 ? null : 1)} />
+          <Portrait f={a} active={active === 0} shown={shown === 0} onSelect={() => select(0)} />
+          <Portrait f={b} active={active === 1} shown={shown === 1} onSelect={() => select(1)} />
         </div>
         <p className="st-band__note st-band__note--right">{b.summary}</p>
+        <p className="st-band__hint">Tap a photo to read about each founder.</p>
       </div>
-      <div className="st-col st-bios">
+      <div className="st-bios">
         {founders.map((f, i) => (
-          <div
+          <article
             key={f.name}
             id={`bio-${f.initials}`}
-            className={`st-bio${active !== null && active !== i ? ' is-dim' : ''}`}
+            className={`st-bio st-bio--${i === 0 ? 'left' : 'right'}${active === i ? ' is-active' : ''}${
+              shown === i ? ' is-shown' : ''
+            }`}
+            aria-label={f.name}
           >
-            <p>
-              <strong>{f.name}</strong>, {f.role.toLowerCase()}. {f.bio[0]}
-            </p>
+            <h3 className="st-bio__name">
+              {f.name}
+              <span>{f.role}</span>
+            </h3>
+            <p>{f.bio[0]}</p>
             <p>{f.bio[1]}</p>
             <ul className="st-tags" aria-label={`${f.short}’s skills`}>
               {f.skills.map((s) => (
                 <li key={s}>{s}</li>
               ))}
             </ul>
-          </div>
+          </article>
         ))}
       </div>
     </>

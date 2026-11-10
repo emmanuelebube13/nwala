@@ -1896,3 +1896,94 @@
     animation: none;
   }
 }
+
+/* ---------- Founder bios: side by side on desktop, one at a time on mobile ---------- */
+.st-bios {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px 48px;
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+.st-bio {
+  align-content: start;
+  padding: 4px 0 4px 20px;
+  border-left: 2px solid transparent;
+  transition: border-color 0.25s ease, background-color 0.25s ease;
+}
+
+.st-bio.is-dim {
+  opacity: 1;
+}
+
+.st-bio.is-active {
+  border-left-color: var(--studio-accent);
+}
+
+.st-bio__name {
+  display: grid;
+  gap: 2px;
+  margin-bottom: 4px;
+  font-weight: 600;
+  font-size: 18px;
+  letter-spacing: -0.03em;
+  color: var(--gray-10);
+}
+
+.st-bio__name span {
+  font-weight: 400;
+  font-size: 14px;
+  letter-spacing: 0;
+  color: var(--gray-8);
+}
+
+@keyframes st-bio-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@media (max-width: 900px) {
+  .st-bios {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .st-bio {
+    display: none;
+    padding-left: 0;
+    border-left: 0;
+  }
+  .st-bio.is-shown {
+    display: grid;
+    animation: st-bio-in 0.3s ease both;
+  }
+  /* On mobile the ring marks whose bio is showing */
+  .st-portrait.is-active {
+    box-shadow: none;
+  }
+  .st-portrait.is-shown {
+    box-shadow: 0 0 0 2px var(--studio-accent);
+  }
+  .st-portrait.is-shown .st-portrait__label {
+    opacity: 1;
+    transform: none;
+  }
+  .st-band__note {
+    display: none;
+  }
+}
+
+.st-band__hint {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .st-band__hint {
+    display: block;
+    grid-column: 1 / -1;
+    font-size: 13px;
+    color: var(--gray-8);
+    text-align: center;
+  }
+}
