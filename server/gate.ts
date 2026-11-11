@@ -2,15 +2,24 @@
  * NICANS password gate: shared by the Vercel functions (api/*), the Vercel Routing Middleware (proxy.ts)
  * and the local Vite dev/preview emulation (vite.config.ts). Never imported by browser code.
  *
- * - The password and signing secret live only in environment variables:
- *     NICANS_PASSWORD        accepted password(s); separate alternatives with commas
- *     NICANS_COOKIE_SECRET   long random string used to sign the session cookie
+ * - The only accepted password is stored as a SHA-256 hash (never in plain text); input must match exactly
+ *   (surrounding spaces are ignored).
+ * - The cookie signing secret comes from NICANS_COOKIE_SECRET when set (32+ characters); otherwise it is derived
+ *   from Vercel's own project/deployment IDs, which are not in the repository. No configuration is required.
  * - A correct password sets a signed (HMAC-SHA256), httpOnly cookie valid for 30 days.
  * - Private files (/private/*, /assets/private/*) are served only with a valid cookie.
  * - No database: the signature is the proof.
  */
 
-export type GateEnv = { NICANS_PASSWORD?: string; NICANS_COOKIE_SECRET?: string }
+export type GateEnv = {
+  NICANS_COOKIE_SECRET?: string
+  VERCEL_PROJECT_ID?: string
+  VERCEL_DEPLOYMENT_ID?: string
+  VERCEL_GIT_REPO_ID?: string
+}
+
+/** SHA-256 of the one accepted password. */
+const PASSWORD_SHA256 = '925c1ac191aa1f4ebc3616087f2166ab82bceae77dabeedd86b7128169e7ed50'
 
 export const COOKIE = 'nicans_session'
 export const MAX_AGE_SECONDS = 60 * 60 * 24 * 30
@@ -24,11 +33,11 @@ const json = (body: unknown, status = 200, headers: Record<string, string> = {})
     headers: { 'content-type': 'application/json', 'cache-control': 'no-store', ...headers },
   })
 
-function configured(env: GateEnv): env is Required<GateEnv> {
-  return Boolean(env.NICANS_PASSWORD && env.NICANS_COOKIE_SECRET && env.NICANS_COOKIE_SECRET.length >= 32)
+/** Signing secret: the explicit env var if valid, otherwise derived from Vercel's system IDs (not in the repo). */
+function secretFor(env: GateEnv): string {
+  if (env.NICANS_COOKIE_SECRET && env.NICANS_COOKIE_SECRET.length >= 32) return env.NICANS_COOKIE_SECRET
+  return `nicans-gate|${env.VERCEL_PROJECT_ID ?? ''}|${env.VERCEL_DEPLOYMENT_ID ?? ''}|${env.VERCEL_GIT_REPO_ID ?? ''}|local`
 }
-
-const normalize = (v: string) => v.trim().toLowerCase().replace(/\s+/g, ' ')
 
 async function sha256(value: string): Promise<Uint8Array> {
   return new Uint8Array(await crypto.subtle.digest('SHA-256', enc.encode(value)))
@@ -42,15 +51,15 @@ function equalBytes(a: Uint8Array, b: Uint8Array): boolean {
   return diff === 0
 }
 
-/** Compares against every accepted password without short-circuiting, so timing does not leak which one matched. */
-async function passwordMatches(input: string, env: Required<GateEnv>): Promise<boolean> {
-  const given = await sha256(normalize(input))
-  let ok = false
-  for (const candidate of env.NICANS_PASSWORD.split(',')) {
-    if (!candidate.trim()) continue
-    if (equalBytes(given, await sha256(normalize(candidate)))) ok = true
-  }
-  return ok
+function hexToBytes(hex: string): Uint8Array {
+  const out = new Uint8Array(hex.length / 2)
+  for (let i = 0; i < out.length; i++) out[i] = parseInt(hex.slice(i * 2, i * 2 + 2), 16)
+  return out
+}
+
+/** Exact match against the stored hash (surrounding spaces ignored), compared in constant time. */
+async function passwordMatches(input: string): Promise<boolean> {
+  return equalBytes(await sha256(input.trim()), hexToBytes(PASSWORD_SHA256))
 }
 
 function base64url(bytes: Uint8Array): string {
@@ -82,20 +91,17 @@ function cookieAttributes(request: Request, maxAge: number): string {
 
 /** True when the request carries a valid, unexpired, correctly signed session cookie. */
 export async function hasValidSession(request: Request, env: GateEnv): Promise<boolean> {
-  if (!configured(env)) return false
   const value = readCookie(request, COOKIE)
   if (!value) return false
   const [exp, sig] = value.split('.')
   if (!exp || !sig || !/^\d+$/.test(exp) || Number(exp) < Date.now()) return false
-  const expected = await sign(exp, env.NICANS_COOKIE_SECRET)
+  const expected = await sign(exp, secretFor(env))
   return equalBytes(await sha256(sig), await sha256(expected))
 }
 
 /** POST /api/unlock  { password } */
 export async function handleUnlock(request: Request, env: GateEnv): Promise<Response> {
   if (request.method !== 'POST') return json({ error: 'Method not allowed' }, 405, { allow: 'POST' })
-  if (!configured(env)) return json({ error: 'The concept is not available right now.' }, 503)
-
   let password = ''
   try {
     const body = (await request.json()) as { password?: unknown }
@@ -104,13 +110,13 @@ export async function handleUnlock(request: Request, env: GateEnv): Promise<Resp
     return json({ error: 'Bad request' }, 400)
   }
 
-  if (!(await passwordMatches(password, env))) {
+  if (!(await passwordMatches(password))) {
     await new Promise((r) => setTimeout(r, 600)) // slow down guessing
     return json({ ok: false }, 401)
   }
 
   const exp = String(Date.now() + MAX_AGE_SECONDS * 1000)
-  const value = `${exp}.${await sign(exp, env.NICANS_COOKIE_SECRET)}`
+  const value = `${exp}.${await sign(exp, secretFor(env))}`
   return json({ ok: true }, 200, { 'set-cookie': `${COOKIE}=${value}${cookieAttributes(request, MAX_AGE_SECONDS)}` })
 }
 
