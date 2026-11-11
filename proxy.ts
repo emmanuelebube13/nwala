@@ -1,5 +1,5 @@
 import { next } from '@vercel/functions'
-import { guard } from './server/gate'
+import { guard } from './server/gate.js'
 
 /**
  * Vercel Routing Middleware (configured in vercel.json → "proxy").
