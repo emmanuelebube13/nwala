@@ -36,8 +36,9 @@ export default function FeaturedConcept({ onOpen }: { onOpen: (e: MouseEvent) =>
           <Copy>
             <Title id="featured-title">NICANS: A digital front desk</Title>
             <Text>
-              A website concept for a Nova Scotia community association, with a newcomer guide, program registration and
-              a volunteer dashboard. Shared privately with permission.
+              A website concept for the Ndi Igbo Cultural Association of Nova Scotia: a step-by-step guide for newcomers,
+              online registration for families, and one place for volunteers to manage it all. Shared privately with
+              permission.
             </Text>
           </Copy>
           <Button>

@@ -69,7 +69,7 @@ export const projects: Project[] = [
     tag: 'Private concept',
     tagStyle: 'private',
     description:
-      'A “digital front desk” for the Ndi Igbo Cultural Association of Nova Scotia: newcomers follow a step-by-step settling-in guide, families sign up for programs online, and volunteers see every registration in one place.',
+      'A website concept for the Ndi Igbo Cultural Association of Nova Scotia: a step-by-step guide for newcomers, online registration for families, and one place for volunteers to manage it all.',
     type: 'UX · Web design',
     credit: 'Ifechukwu (UX & visual design)',
     year: '2026',
