@@ -69,28 +69,28 @@ const audiences: Audience[] = [
     title: 'I’m new to Nova Scotia',
     text: 'We have a step-by-step help for your first weeks and months.',
     to: `${NC}/newcomers`,
-    img: '/assets/nicans/card-newcomer.png',
+    img: '/private/nicans/concept/card-newcomer.png',
   },
   {
     icon: UsersThree,
     title: 'I’m a member or family',
     text: 'See our programs, events and membership for all ages.',
     to: `${NC}/register?type=member`,
-    img: '/assets/nicans/card-member.png',
+    img: '/private/nicans/concept/card-member.png',
   },
   {
     icon: Heart,
     title: 'I want to volunteer',
     text: 'Share your time and skills with the community.',
     to: `${NC}/register?type=volunteer`,
-    img: '/assets/nicans/card-volunteer.png',
+    img: '/private/nicans/concept/card-volunteer.png',
   },
   {
     icon: Handshake,
     title: 'I represent an organization',
     text: 'Partner with NICANS to serve newcomers.',
     to: `${NC}/register?type=partner`,
-    img: '/assets/nicans/card-newcomer.png',
+    img: '/private/nicans/concept/card-newcomer.png',
     mirror: true,
   },
 ]
@@ -220,7 +220,7 @@ function EventsSection() {
         </div>
         <div className="ncl-posters reveal">
           <img
-            src="/assets/nicans/posters.png"
+            src="/private/nicans/concept/posters.png"
             alt="Posters for the Iri-Ji New Yam Festival and Amara showcase"
             width={760}
             height={635}

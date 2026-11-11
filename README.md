@@ -27,17 +27,31 @@ npm run build    # type-check and production build into dist/
 
 Registrations submitted in the demo are stored in the browser and appear in the dashboard.
 
-## Password
+## Password gate
 
-The case study and concept pages ask for a password. It is set in `src/lib/unlock.ts` (currently `njiko`).
-A link with `?key=njiko` (for example `/work/nicans?key=njiko`) opens it directly, which is handy for the proposal email.
+The NICANS case study, screen pages and concept are protected on the server. No database is needed.
+
+- `POST /api/unlock` checks the password against `NICANS_PASSWORD` and sets a signed (HMAC-SHA256), httpOnly
+  `nicans_session` cookie valid for 30 days. `POST /api/lock` clears it; `GET /api/session` reports the state.
+- Routing Middleware (`proxy.ts`, configured in `vercel.json`) blocks `/private/*` (NICANS images) and
+  `/assets/private/*` (NICANS code chunks, see `vite.config.ts`) without a valid cookie.
+- Shared logic lives in `server/gate.ts`. `npm run dev` and `npm run preview` emulate the gate locally.
+
+Set these environment variables (Vercel → Project → Settings → Environment Variables, and in `.env.local` locally):
+
+| Variable | Value |
+| --- | --- |
+| `NICANS_PASSWORD` | The password. Separate alternatives with commas; matching ignores case and extra spaces. |
+| `NICANS_COOKIE_SECRET` | At least 32 random characters, e.g. `python3 -c "import secrets; print(secrets.token_hex(32))"` |
+
+Changing `NICANS_COOKIE_SECRET` signs everyone out. Without both variables the gate stays locked.
 
 ## Editing content
 
 - Studio name, email, founders' bios and the project list: `src/data/studio.ts`
 - NICANS programs, events and sample registrations: `src/data/nicans.ts`
 - Colours, fonts and spacing: `src/styles/tokens.css`
-- Images: `public/assets/`
+- Images: `public/assets/` (public) and `public/private/nicans/` (served only behind the password)
 
 ## Project structure
 

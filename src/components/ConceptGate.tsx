@@ -1,21 +1,37 @@
-import { useState, type ReactNode } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useEffect, useState, type ReactNode } from 'react'
+import { useNavigate } from 'react-router-dom'
 import StudioShell from './studio/StudioShell.tsx'
 import PasswordDialog from './studio/PasswordDialog.tsx'
-import { isUnlocked, unlockFromQuery } from '../lib/unlock.ts'
+import { getSession, knownSession } from '../lib/unlock.ts'
 
-/** Protects the NICANS case study and concept. Direct visits see the password pop-up over a blank studio page. */
+/**
+ * Protects the NICANS pages. The server decides: until /api/session confirms a valid session, the protected
+ * page (and its private code chunk) is never loaded. Direct visits see the password pop-up over a blank studio page.
+ */
 export default function ConceptGate({ children }: { children: ReactNode }) {
-  const { search } = useLocation()
   const navigate = useNavigate()
-  const [open, setOpen] = useState(() => isUnlocked() || unlockFromQuery(search))
+  const [state, setState] = useState<'checking' | 'locked' | 'unlocked'>(() => {
+    const k = knownSession()
+    return k === null ? 'checking' : k ? 'unlocked' : 'locked'
+  })
 
-  if (open) return <>{children}</>
+  useEffect(() => {
+    if (state !== 'checking') return
+    let live = true
+    getSession().then((ok) => live && setState(ok ? 'unlocked' : 'locked'))
+    return () => {
+      live = false
+    }
+  }, [state])
+
+  if (state === 'unlocked') return <>{children}</>
 
   return (
     <StudioShell active="work">
-      <div style={{ minHeight: '70vh' }} />
-      <PasswordDialog open onClose={() => navigate('/work')} onSuccess={() => setOpen(true)} />
+      <div style={{ minHeight: '70vh' }} aria-busy={state === 'checking'} />
+      {state === 'locked' && (
+        <PasswordDialog open onClose={() => navigate('/work')} onSuccess={() => setState('unlocked')} />
+      )}
     </StudioShell>
   )
 }

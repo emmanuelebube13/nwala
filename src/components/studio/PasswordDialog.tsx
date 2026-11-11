@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { WarningCircle, X } from '@phosphor-icons/react'
-import { CONCEPT_HINT, checkPassword, unlock } from '../../lib/unlock.ts'
+import { CONCEPT_HINT, unlock } from '../../lib/unlock.ts'
 
 /** Password pop-up from the final Figma "password" frame. */
 export default function PasswordDialog({
@@ -13,7 +13,8 @@ export default function PasswordDialog({
   onSuccess: () => void
 }) {
   const [value, setValue] = useState('')
-  const [error, setError] = useState(false)
+  const [error, setError] = useState<false | 'wrong' | 'unavailable'>(false)
+  const [busy, setBusy] = useState(false)
   const input = useRef<HTMLInputElement>(null)
   const panel = useRef<HTMLDivElement>(null)
 
@@ -48,15 +49,21 @@ export default function PasswordDialog({
 
   if (!open) return null
 
-  function submit(e: FormEvent) {
+  async function submit(e: FormEvent) {
     e.preventDefault()
-    if (checkPassword(value)) {
-      unlock()
+    if (busy || !value.trim()) {
+      input.current?.focus()
+      return
+    }
+    setBusy(true)
+    const result = await unlock(value)
+    setBusy(false)
+    if (result === 'ok') {
       setValue('')
       setError(false)
       onSuccess()
     } else {
-      setError(true)
+      setError(result)
       input.current?.focus()
     }
   }
@@ -80,7 +87,7 @@ export default function PasswordDialog({
               autoComplete="off"
               placeholder="Enter password"
               value={value}
-              aria-invalid={error}
+              aria-invalid={error === 'wrong'}
               aria-describedby="pw-help"
               onChange={(e) => {
                 setValue(e.target.value)
@@ -89,7 +96,10 @@ export default function PasswordDialog({
             />
             {error ? (
               <p id="pw-help" className="pw__help pw__help--error" role="alert">
-                <WarningCircle size={16} weight="fill" aria-hidden="true" /> That didn’t match. {CONCEPT_HINT}
+                <WarningCircle size={16} weight="fill" aria-hidden="true" />{' '}
+                {error === 'wrong'
+                  ? `That didn’t match. ${CONCEPT_HINT}`
+                  : 'Couldn’t check the password right now. Please try again.'}
               </p>
             ) : (
               <p id="pw-help" className="pw__help">
@@ -97,8 +107,8 @@ export default function PasswordDialog({
               </p>
             )}
           </div>
-          <button type="submit" className="pill pill--dark">
-            View Concept
+          <button type="submit" className="pill pill--dark" disabled={busy} aria-busy={busy}>
+            {busy ? 'Checking…' : 'View Concept'}
           </button>
         </form>
       </div>

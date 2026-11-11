@@ -14,7 +14,7 @@
   justify-content: center;
   min-height: 537px;
   padding: 181px var(--gutter) 72px;
-  background: #1a1a1a url('/assets/nicans/hero.jpg') center top / cover no-repeat;
+  background: #1a1a1a url('/private/nicans/concept/hero.jpg') center top / cover no-repeat;
   color: #fff;
   isolation: isolate;
   overflow: hidden;
@@ -593,7 +593,7 @@
   padding: 72px 32px;
   border-radius: 30px;
   overflow: hidden;
-  background: #1a1a1a url('/assets/nicans/hero.jpg') center 30% / cover no-repeat;
+  background: #1a1a1a url('/private/nicans/concept/hero.jpg') center 30% / cover no-repeat;
   color: #fff;
   isolation: isolate;
 }

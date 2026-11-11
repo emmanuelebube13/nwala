@@ -4,7 +4,8 @@ import ConceptGate from '../components/ConceptGate.tsx'
 
 const StudioHome = lazy(() => import('../pages/studio/Home.tsx'))
 const StudioWork = lazy(() => import('../pages/studio/Work.tsx'))
-const CaseStudy = lazy(() => import('../pages/studio/CaseStudy.tsx'))
+const NicansCase = lazy(() => import('../pages/studio/NicansCase.tsx'))
+const NicansScreen = lazy(() => import('../pages/studio/NicansScreen.tsx'))
 const NotFound = lazy(() => import('../pages/studio/NotFound.tsx'))
 
 const NicansLanding = lazy(() => import('../pages/nicans/Landing.tsx'))
@@ -39,7 +40,15 @@ export default function App() {
             path="/work/nicans"
             element={
               <ConceptGate>
-                <CaseStudy />
+                <NicansCase />
+              </ConceptGate>
+            }
+          />
+          <Route
+            path="/work/nicans/screens/:slug"
+            element={
+              <ConceptGate>
+                <NicansScreen />
               </ConceptGate>
             }
           />

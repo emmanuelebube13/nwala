@@ -20,9 +20,9 @@ export interface Founder {
 
 export const founders: Founder[] = [
   {
-    name: 'Ifechukwu Emmanuel Asiegbu',
+    name: 'Ifechukwu Asiegbu',
     short: 'Ifechukwu',
-    role: 'Product designer',
+    role: 'Design Engineer',
     initials: 'IA',
     summary: 'Product designer. Founding designer at Dora; brand and web design for BAPOM Hospital.',
     bio: [
@@ -35,7 +35,7 @@ export const founders: Founder[] = [
   {
     name: 'Emmanuel Mbachu',
     short: 'Emmanuel',
-    role: 'Data analyst',
+    role: 'Data Analyst',
     initials: 'EM',
     summary: 'Data analyst. Power BI reporting, mapping and housing research across Nova Scotia.',
     bio: [
