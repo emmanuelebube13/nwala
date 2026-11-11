@@ -53,7 +53,7 @@ function Header({ variant }: { variant: 'overlay' | 'solid' }) {
     <header className={`nc-header nc-header--${variant}`}>
       <div className="nc-container nc-header__inner">
         <Link to={NC} className="nc-brand">
-          <img src="/assets/nicans/logo.png" alt="" width={28} height={28} />
+          <img src="/private/nicans/concept/logo.png" alt="" width={28} height={28} />
           NICANS
         </Link>
         <button

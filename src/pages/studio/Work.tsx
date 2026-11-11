@@ -1,7 +1,8 @@
 import { useState, type MouseEvent } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowUpRight, ChatsCircle, Copy, LockSimple, Plus } from '@phosphor-icons/react'
-import StudioShell, { Emblem } from '../../components/studio/StudioShell.tsx'
+import { ArrowUpRight, Copy, LockSimple, Plus } from '@phosphor-icons/react'
+import SectionEmblem from '../../components/studio/SectionEmblem.tsx'
+import StudioShell from '../../components/studio/StudioShell.tsx'
 import { useConceptDialog } from '../../components/studio/useConceptDialog.tsx'
 import { projects, STUDIO_EMAIL, STUDIO_LOCATION, type Project } from '../../data/studio.ts'
 
@@ -123,9 +124,7 @@ export default function Work() {
       <section className="st-section sw-contact" aria-labelledby="work-contact" id="contact">
         <div className="st-col">
           <div className="st-section__head reveal" style={{ marginBottom: 24 }}>
-            <Emblem>
-              <ChatsCircle size={32} weight="fill" />
-            </Emblem>
+            <SectionEmblem icon="/assets/studio/home/emblem-contact.png" />
             <h2 id="work-contact" className="st-h2">
               Let’s build your ideas together.
             </h2>

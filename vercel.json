@@ -1,3 +1,8 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "proxy": {
+    "entrypoint": "proxy.ts",
+    "matcher": ["/private/:path*", "/assets/private/:path*"]
+  },
+  "rewrites": [{ "source": "/((?!api/|private/|assets/).*)", "destination": "/index.html" }]
 }
