@@ -1,7 +1,7 @@
 /** Studio content. Edit names, bios, links and email here — pages read from this file. */
 
 export const STUDIO_NAME = 'Nwaala'
-export const STUDIO_EMAIL = 'hello@nwaala.ca' // TODO: confirm the studio email
+export const STUDIO_EMAIL = 'emmanuelasiegbu98@gmail.com'
 export const STUDIO_LOCATION = 'Halifax, Nova Scotia'
 
 export interface Founder {
@@ -21,29 +21,31 @@ export interface Founder {
 export const founders: Founder[] = [
   {
     name: 'Ifechukwu Asiegbu',
+    photo: '/assets/studio/founders/ifechukwu.jpg',
     short: 'Ifechukwu',
     role: 'Design Engineer',
     initials: 'IA',
-    summary: 'Product designer. Founding designer at Dora; brand and web design for BAPOM Hospital.',
+    summary: 'Designer and full-stack developer: JavaScript, WordPress and .NET.',
     bio: [
-      'Ifechukwu designs websites and products that people can use the first time they open them. He has been the founding designer on a business voice-calling platform, redesigned the brand and website of a charity-funded hospital, and designed responsive interfaces for one of Nigeria’s largest mobile networks.',
-      'He leads research, information architecture and visual design at Nwaala, and makes sure every screen meets accessibility standards before it ships.',
+      'Ifechukwu designs and builds websites and apps, from the first sketch to the finished, working site. He builds with JavaScript, WordPress and .NET, so one person can take a project from idea to launch.',
+      'He was the founding designer of a delivery automation app, rebuilt the brand and website of a charity-funded hospital, and designed phone-friendly pages for one of Nigeria’s largest mobile networks. At Nwaala he leads design and development, and makes sure every page is easy to use for everyone.',
     ],
-    skills: ['UX research', 'Information architecture', 'Visual & brand design', 'Accessible UI', 'Figma'],
+    skills: ['Design', 'JavaScript', 'WordPress', '.NET', 'Accessible websites'],
     highlights: ['Founding designer, Dora', 'BAPOM Hospital rebrand', 'Telecom responsive design'],
   },
   {
     name: 'Emmanuel Mbachu',
+    photo: '/assets/studio/founders/emmanuel.jpg',
     short: 'Emmanuel',
     role: 'Data Analyst',
     initials: 'EM',
-    summary: 'Data analyst. Power BI reporting, mapping and housing research across Nova Scotia.',
+    summary: 'Data analyst: measurement built into the code, testing and site building.',
     bio: [
-      'Emmanuel turns messy records into reports that boards and funders can act on. He built a Power BI reporting suite on more than 355,000 Nova Scotia property sales, worked on mapping with Saint Mary’s University, and ran mixed-methods housing research for planning stakeholders.',
-      'At Nwaala he builds the sites and the measurement behind them: forms that feed clean data, dashboards for volunteers and simple impact reports.',
+      'Emmanuel is Nwaala’s data analyst. He builds measurement into the sites themselves, so we can see how a site performs, how people use it, and which parts of the code need to be faster.',
+      'He also helps build the sites, checks them with clients before launch, and tests ideas against real data to see what actually works. Before Nwaala he built a Power BI report on more than 355,000 Nova Scotia property sales, built an interactive map with Toronto Metropolitan University showing the support available to students in rural Nova Scotia, and ran housing research for planners.',
     ],
-    skills: ['Power BI & reporting', 'Mapping & GIS', 'Survey & mixed-methods research', 'Web development', 'Python & SQL'],
-    highlights: ['355k+ NS property records', 'Saint Mary’s University mapping', 'NewRoots housing research'],
+    skills: ['Data tracking & analytics', 'Power BI & reporting', 'Testing ideas with data', 'User testing', 'Web development'],
+    highlights: ['355k+ NS property records', 'TMU student support map', 'NewRoots housing research'],
   },
 ]
 
@@ -67,24 +69,26 @@ export const projects: Project[] = [
     tag: 'Private concept',
     tagStyle: 'private',
     description:
-      'Website concept for a Nova Scotia community association: newcomer guide, program registration and a volunteer dashboard. Designed in Figma, then built as a working prototype.',
-    type: 'UX · Web design · Build',
-    credit: 'Ifechukwu (UX & visual design) · Emmanuel (data, reporting & build)',
+      'A “digital front desk” for the Ndi Igbo Cultural Association of Nova Scotia: newcomers follow a step-by-step settling-in guide, families sign up for programs online, and volunteers see every registration in one place.',
+    type: 'UX · Web design',
+    credit: 'Ifechukwu (UX & visual design)',
     year: '2026',
     link: { label: 'View the concept', href: '/work/nicans', internal: true },
   },
   {
     title: 'BAPOM Hospital',
     tag: 'Branding & Web design',
-    description: 'Brand and website redesign for a charity-funded hospital in Nigeria, supported from Nova Scotia.',
+    description:
+      'A new brand and website for the Boniface & Paulina Okafor Memorial Hospital, a charity-funded hospital in Nigeria backed by supporters in Canada. The site shows the hospital’s impact and makes it easy to donate.',
     type: 'Branding · Web design',
-    credit: 'Ifechukwu (brand & web design) · backend by a development partner',
+    credit: 'Ifechukwu (brand & web design) · Nikkayo Williams (backend)',
     link: { label: 'bapomhospital.com', href: 'https://bapomhospital.com' },
   },
   {
     title: 'Dora',
     tag: 'Branding & Product design',
-    description: 'Founding design for a business voice-calling platform: product app and landing page.',
+    description:
+      'Founding design for Dora when it was a delivery automation product: the first app and the landing page. Dora has since moved into business calling.',
     type: 'Branding · Product design',
     credit: 'Ifechukwu (founding designer)',
     link: { label: 'usedora.com', href: 'https://usedora.com' },

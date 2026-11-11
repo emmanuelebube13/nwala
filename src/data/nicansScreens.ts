@@ -95,7 +95,7 @@ export const nicansScreens: NicansScreen[] = [
     approach:
       'One hub brings weekly numbers above a searchable table, with program and status filters and one-click CSV export.',
     rationale:
-      'The aim is one screen for volunteers to review everything, with exports for board and funder reports. Emmanuel’s data & reporting approach connects this same data to simple impact reports.',
+      'The aim is one screen for volunteers to review everything, with exports for board and funder reports. The same data can feed simple impact reports.',
   },
 ]
 

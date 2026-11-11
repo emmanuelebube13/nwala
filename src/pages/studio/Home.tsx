@@ -54,13 +54,14 @@ export default function Home() {
       <Hero>
         <Column>
           <H1 className="reveal">
-            We design clear
-            <br /> digital experiences and
-            <br /> back them with data.
+            We craft websites with a story,
+            <br /> built to be used and
+            <br /> measured to succeed.
           </H1>
           <Lead className="reveal">
-            {STUDIO_NAME} is a two-person studio: a product designer and a data analyst. We help organizations build
-            websites people can actually use, and measure whether they work.
+            {STUDIO_NAME} is a two-person studio in Halifax, Nova Scotia. Our websites and apps tell your story, feel
+            delightful and are easy to use, built for your customers and your business. Then we track what works, so your
+            business keeps growing.
           </Lead>
           <div className="reveal">
             <PillLink to="#contact">Contact us</PillLink>

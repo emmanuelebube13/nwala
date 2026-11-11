@@ -143,7 +143,7 @@ export const Founders = styled.div`
 
 export const Founder = styled.article`
   display: flex;
-  gap: 32px;
+  gap: 24px;
   align-items: flex-start;
   font-size: 16px;
   line-height: 1.6;
@@ -156,8 +156,8 @@ export const Founder = styled.article`
 
 export const Portrait = styled.div`
   flex: none;
-  width: 64px;
-  height: 64px;
+  width: 90px;
+  height: 90px;
   overflow: hidden;
   border-radius: 6px;
   background: ${({ theme }) => theme.color.gray5};
