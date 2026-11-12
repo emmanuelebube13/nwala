@@ -3,7 +3,6 @@
  * httpOnly session cookie. Nothing secret lives in the browser: this module only asks the server.
  */
 
-/** A clue shown under the password field. It is not the password. */
 
 let session: Promise<boolean> | null = null
 let known: boolean | null = null
