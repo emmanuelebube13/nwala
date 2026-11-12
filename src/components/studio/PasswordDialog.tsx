@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { WarningCircle, X } from '@phosphor-icons/react'
-import { CONCEPT_HINT, unlock } from '../../lib/unlock.ts'
+import { unlock } from '../../lib/unlock.ts'
 
 /** Password pop-up from the final Figma "password" frame. */
 export default function PasswordDialog({
@@ -88,7 +88,7 @@ export default function PasswordDialog({
               placeholder="Enter password"
               value={value}
               aria-invalid={error === 'wrong'}
-              aria-describedby="pw-help"
+              aria-describedby={error ? 'pw-help' : undefined}
               onChange={(e) => {
                 setValue(e.target.value)
                 setError(false)
@@ -98,14 +98,10 @@ export default function PasswordDialog({
               <p id="pw-help" className="pw__help pw__help--error" role="alert">
                 <WarningCircle size={16} weight="fill" aria-hidden="true" />{' '}
                 {error === 'wrong'
-                  ? `That didn’t match. ${CONCEPT_HINT}`
+                  ? 'That password didn’t match. Please try again.'
                   : 'Couldn’t check the password right now. Please try again.'}
               </p>
-            ) : (
-              <p id="pw-help" className="pw__help">
-                {CONCEPT_HINT}
-              </p>
-            )}
+            ) : null}
           </div>
           <button type="submit" className="pill pill--dark" disabled={busy} aria-busy={busy}>
             {busy ? 'Checking…' : 'View Concept'}

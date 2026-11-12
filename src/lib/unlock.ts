@@ -4,7 +4,6 @@
  */
 
 /** A clue shown under the password field. It is not the password. */
-export const CONCEPT_HINT = 'Need a hint? Try “Unity is Progress”'
 
 let session: Promise<boolean> | null = null
 let known: boolean | null = null
